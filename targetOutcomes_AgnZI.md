@@ -15,4 +15,4 @@ For this article please focus on findings reported in Section 3.2 The spontaneou
 > There were no differences in more general looking pattern during the test event between the groups, such as overall looking at the two areas of interest combined (i.e., both exits of the tunnel), F2,27 =1.59, p=0.222, g2 =0.11 (MTH =1.22s, MCI =1.56s, MHA = 1.70 s); or the mean number of fixations (defined as eye movements less than 0.5pixels/ms) during the test event, F2,27 =1.99, p=0.156, g2 =0.13 (MTH =39, MCI =41, MHA =53). Thus, all groups were equally attentive throughout the test event.
 
 **Note**
-Make sure to use the original article for additional context and information pre-processing steps. Also check for additional supplementary materials that may provide supporting documentation for analysis procedures.
+Make sure to use the original article for additional context and information about any necessary pre-processing steps. Also check for additional supplementary materials that may provide supporting documentation for analysis procedures.
