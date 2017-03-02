@@ -2,7 +2,7 @@
 ## Article ID: AgnZI
 ## Article doi: http://doi.org/10.1016/j.cognition.2016.08.023
 
-For this article please focus on findings reported in Section 3.2 The spontaneous-response FB-task (SR-FB). Specifically, you should attempt to reproduce all descriptive and inferential analyses reported in the text below:
+For this article please focus on findings reported in Section 3.2 The spontaneous-response FB-task (SR-FB). Specifically, you should attempt to reproduce all descriptive and inferential analyses reported in the text below and associated tables/figures:
 
 > For the dependent measure we coded total looking times at the two upper exits of the Y-shaped tunnel (Fig. 2). For each child, we then calculated a differential looking score (DLS) by subtracting looking to the incorrect exit from looking to the correct exit, and by dividing it by the sum of time spent on looking to correct and incorrect exits (Senju et al., 2009). The DLS-s range from +1 to  1, DLS-s closer to +1 are considered as anticipatory looking mostly towards the correct area. The mean DLS for each group are shown in Fig. 3.
 
