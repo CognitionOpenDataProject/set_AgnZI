@@ -8,7 +8,6 @@ output:
 
 #### Article ID: AgnZI
 #### Pilot: Richie Lenne
-#### Co-pilot: Tom Hardwicke  
 #### Start date: 05/02/2017
 #### End date: 05/16/2017   
 
