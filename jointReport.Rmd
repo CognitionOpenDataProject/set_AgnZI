@@ -1,0 +1,223 @@
+---
+title: "COD Reproducibility Report"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+#### Article ID: AgnZI
+#### Pilot: Richie Lenne
+#### Start date: 05/02/2017
+#### End date: 05/16/2017   
+
+#### Co-pilot: Gustav Nilsonne
+#### Start date: 08/10/2017
+#### End date: 08/10/2017
+
+-------
+
+#### Methods summary: 
+There were three groups for comparisons in this analysis. Group 1 (TH-children) included 15 typically hearing Swedish
+children. Group 2 (CI-children) consisted of 8 Estonian children with pre-lingual profound hearing loss, who used cochlear implants (CIs). Group 3 (HA-children) included 7 Estonian children without cochlear implants.  
+  
+Children completed the spontaneous-response false-belief task (SR-FB) in which they watched a video of a cat (Tom) who followed a mouse (Jerry) through a Y-shaped tunnel. Jerry then hid in one of two boxes located outside the tunnel’s exit points, and Tom sought to find Jerry in the appropriate box. In the false-belief test event Tom saw Jerry hide in one box, but then entered a tunnel, missing the fact that Jerry then moved to the other box. The dependent measure was total looking times at the two upper exits of the Y-shaped tunnel. For each child, they calculated a differential looking score (DLS) by subtracting time spent looking for Tom at the incorrect exit from time spent looking him at the correct exit, and by dividing it by the sum of time spent on looking to correct and incorrect exits (DLS-s). They also looked at whether the child's first look was at the correct location.
+
+------
+
+#### Target outcomes:   
+For this article please focus on findings reported in Section 3.2 The spontaneous-response FB-task (SR-FB). Specifically, you should attempt to reproduce all descriptive and inferential analyses reported in the text below and associated tables/figures:  
+
+> For the dependent measure we coded total looking times at the two upper exits of the Y-shaped tunnel (Fig. 2). For each child, we then calculated a differential looking score (DLS) by subtracting looking to the incorrect exit from looking to the correct exit, and by dividing it by the sum of time spent on looking to correct and incorrect exits (Senju et al., 2009). The DLS-s range from +1 to -1, DLS-s closer to +1 are considered as anticipatory looking mostly towards the correct area. The mean DLS for each group are shown in Fig. 3.  
+
+> As revealed by a one-way ANOVA, there was a significant difference in DLS between the three groups, F2,27 = 7.31, p = 0.003, g2 = 0.35. Planned contrasts showed that the TH-children outperformed the CI-children, t21 = 2.58, p = 0.017, g2 = 0.24, and the HA-children t20 = 4.01, p = 0.001, g2 = 0.45.  
+
+> Additional t tests showed that the TH-children scored significantly above zero (M = 0.72, SD = 0.40), t14 = 6.87, p < 0.001, g2 = 0.77 (see Fig. 3). In contrast, the DLS did not reach significantly above zero in the CI-children (M = 0.16, SD = 0.65), t7 = 0.68, p = 0.519, g2 = 0.06, or the HA-children (M = -0.10, SD = 0.53), t6 =  0.51, p = 0.629, g2 = 0.04.
+
+> Thirteen out of 15 children in the TH group looked first at the correct location directly after the cat disappeared in the tunnel in search of the mouse (p = 0.007, binomial test). In contrast, 3 out of 8 in the CI group (p=0.727), and 5 out of 7 in the HA-group (p = 0.453) looked first at the correct location.  
+
+> There were no differences in more general looking pattern during the test event between the groups, such as overall looking at the two areas of interest combined (i.e., both exits of the tunnel), F2,27 =1.59, p=0.222, g2 =0.11 (MTH =1.22s, MCI =1.56s, MHA = 1.70 s); or the mean number of fixations (defined as eye movements less than 0.5pixels/ms) during the test event, F2,27 =1.99, p=0.156, g2 =0.13 (MTH =39, MCI =41, MHA =53). Thus, all groups were equally attentive throughout the test event.  
+
+------
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+```
+
+## Step 1: Load packages
+
+```{r}
+# load pacman package for installing required packages. 
+if(!require(pacman)){
+  install.packages("pacman")
+  library("pacman")
+}
+
+# load all other required packages
+pacman::p_load(tidyverse,
+               haven,
+               knitr,
+               psych,
+               readxl,
+               CODreports,
+               lsr,
+               car)
+```
+
+## Step 2: Load data
+
+```{r}
+dat_original<-read_excel("data/data.xlsx")
+```
+
+## Step 3: Tidy data
+
+NOTE: Article reports that analysis was done on 30 children. An additional 20 children have the scores for DLS but not for other dependent measures. I removed these additional 20. However it should be noted that the article states that only 6 children were removed prior to analysis:  
+
+> To be included in the study, children had to predict in the second familiarization trial that Tom would search for Jerry in the box where Jerry was hiding. Six children (2 TH, 4 CI) did not meet this criterion and were excluded.
+
+```{r}
+dat <-  dat_original[1:30,]
+```
+
+## Step 4: Run analysis
+
+### Pre-processing
+
+```{r}
+dat$Group<-as.factor(dat$Group)
+```
+
+### Descriptive statistics  
+**Successfully Reproduced**  
+```{r}
+#DLS
+desc_table <-dat %>%
+  group_by(Group) %>%
+  summarize(n=length(`SR-FB (DLS)`),
+            mean=mean(`SR-FB (DLS)`,na.rm=T),
+            sd=sd(`SR-FB (DLS)`,na.rm=T))
+desc_table
+#AOIs
+desc_table <-dat %>%
+  group_by(Group) %>%
+  summarize(n=length(`SR-FB (both AOIs)`),
+            mean=mean(`SR-FB (both AOIs)`,na.rm=T),
+            sd=sd(`SR-FB (both AOIs)`,na.rm=T))
+desc_table
+#fixations
+desc_table <-dat %>%
+  group_by(Group) %>%
+  summarize(n=length(`SR-FB (fixations)`),
+            mean=mean(`SR-FB (fixations)`,na.rm=T),
+            sd=sd(`SR-FB (fixations)`,na.rm=T))
+desc_table
+```
+
+### Inferential statistics  
+  
+> As revealed by a one-way ANOVA, there was a significant difference in DLS between the three groups, F2,27 = 7.31, p = 0.003, g2 = 0.35.  <  
+
+**Successfully Reproduced**  
+```{r}
+mod <- lm(`SR-FB (DLS)` ~ Group, data=dat) 
+anova(mod)
+lsr::etaSquared(mod, type = 2, anova = F )
+```
+
+> Planned contrasts showed that the TH-children outperformed the CI-children, t21 = 2.58, p = 0.017, g2 = 0.24, and the HA-children t20 = 4.01, p = 0.001, g2 = 0.45.  <  
+
+**Successfully Reproduced**  
+NOTE: Original authors treated variances as equal and used the pooled variance for t-tests, instead of using Welch's approximation. This is not reported in article. Welch's is more appropriate because n of each group differs substantially, by a factor of 2.
+```{r}
+# create vector of responses for each group.
+THgroup <- as_vector(dat[dat$Group=="TH (S1)",c("SR-FB (DLS)")])
+CIgroup <- as_vector(dat[dat$Group=="CI (S1)",c("SR-FB (DLS)")])
+HAgroup <- as_vector(dat[dat$Group=="HA (S1)",c("SR-FB (DLS)")])
+
+#t-tests
+T1 <- t.test(THgroup,CIgroup, var.equal = T)
+T1
+# eta-squared: t^2 / t^2 + (n1 + n2 - 2)
+T1$statistic^2 / (T1$statistic^2 + T1$parameter)
+
+T2 <- t.test(THgroup,HAgroup, var.equal = T)
+T2
+# eta-squared: t^2 / t^2 + (n1 + n2 - 2)
+T2$statistic^2 / (T2$statistic^2 + T2$parameter)
+```
+
+> Additional t tests showed that the TH-children scored significantly above zero (M = 0.72, SD = 0.40), t14 = 6.87, p < 0.001, g2 = 0.77 (see Fig. 3).  <  
+
+**Successfully Reproduced**  
+```{r}
+T3 <- t.test(THgroup, var.equal = T)
+# eta-squared: t^2 / t^2 + (n1 + n2 - 2)
+T3
+T3$statistic^2 / (T3$statistic^2 + T3$parameter)
+```
+
+> In contrast, the DLS did not reach significantly above zero in the CI-children (M = 0.16, SD = 0.65), t7 = 0.68, p = 0.519, g2 = 0.06, or the HA-children (M = -0.10, SD = 0.53), t6 = -0.51, p = 0.629, g2 = 0.04.  <  
+
+**Successfully Reproduced**  
+```{r}
+T4 <- t.test(CIgroup, var.equal = T)
+# eta-squared: t^2 / t^2 + (n1 + n2 - 2)
+T4
+T4$statistic^2 / (T4$statistic^2 + T4$parameter)
+
+T5 <- t.test(HAgroup, var.equal = T)
+# eta-squared: t^2 / t^2 + (n1 + n2 - 2)
+T5
+T5$statistic^2 / (T5$statistic^2 + T5$parameter)
+```
+
+> Thirteen out of 15 children in the TH group looked first at the correct location directly after the cat disappeared in the tunnel in search of the mouse (p = 0.007, binomial test). In contrast, 3 out of 8 in the CI group (p=0.727), and 5 out of 7 in the HA-group (p = 0.453) looked first at the correct location.  <  
+
+**Error, see below**  
+NOTE: should be 14 of 15 correct in TH group, original article reports 13 of 15. 
+
+```{r}
+table(dat$Group,dat$`SR-FB (first look)`)
+
+# TH
+binom.test(14, 15, p = 0.5, alternative = "two.sided", conf.level = 0.95)
+compareValues(reportedValue = 0.007, obtainedValue = 0.0009766, isP = TRUE)
+
+# CI
+binom.test(3, 8, p = 0.5, alternative = "two.sided", conf.level = 0.95)
+
+# HA
+binom.test(5, 7, p = 0.5, alternative = "two.sided", conf.level = 0.95)
+```
+> There were no differences in more general looking pattern during the test event between the groups, such as overall looking at the two areas of interest combined (i.e., both exits of the tunnel), F2,27 =1.59, p=0.222, g2 =0.11 (MTH =1.22s, MCI =1.56s, MHA = 1.70 s); or the mean number of fixations (defined as eye movements less than 0.5pixels/ms) during the test event, F2,27 =1.99, p=0.156, g2 =0.13 (MTH =39, MCI =41, MHA =53). Thus, all groups were equally attentive throughout the test event.  <  
+
+**Successfully Reproduced**  
+```{r}
+mod <- lm(`SR-FB (both AOIs)` ~ Group, data=dat) 
+anova(mod)
+lsr::etaSquared(mod, type = 2, anova = F )
+
+mod <- lm(`SR-FB (fixations)` ~ Group, data=dat) 
+anova(mod)
+lsr::etaSquared(mod, type = 2, anova = F )
+```
+
+## Step 5: Conclusion
+
+```{r}
+codReport(Report_Type = 'joint',
+          Article_ID = 'AgnZI', 
+          Insufficient_Information_Errors = 0,
+          Decision_Errors = 0, 
+          Major_Numerical_Errors = 1, 
+          Minor_Numerical_Errors = 0)
+```
+
+I was able to reproduce all but one result. The one error was that the original stated that "thirteen out of 15 children in the TH group looked first at the correct location," however 14 out of 15 did. While this error resulted in a major numerical difference for the p-value, it does not change the inference (i.e., it results in a smaller p-value).  
+
+There were a two other issues that are likely beyond this scope of this project. First, the original article reports results for 30 children. However, there are an additional 20 responses on one of dependent measures, "SR-FB (DLS)". They note only 6 exclusion in the methods section. Second, the original authors treated variances as equal and used the pooled variance for t-tests, instead of using Welch's approximation. This is not reported in article. Yet, Welch's is more appropriate because n of each group differs substantially, by a factor of 2. Using Welch's substantially reduces the p-values. 
+
+```{r session_info, include=TRUE, echo=TRUE, results='markup'}
+devtools::session_info()
+```
