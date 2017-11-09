@@ -9,11 +9,8 @@ output:
 #### Article ID: AgnZI
 
 #### Pilot: Richie Lenne
-#### Start date: May 2 2017
-#### End date: May 16 2017 
-
 #### Co-pilot: Gustav Nilsonne
-#### Start date: Aug 10 2017
+#### Start date: May 2 2017
 #### End date: Aug 10 2017
 
 #### Final verification: Tom Hardwicke
