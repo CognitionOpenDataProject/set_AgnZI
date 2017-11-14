@@ -375,8 +375,7 @@ reportObject$resolved_typo <- 0
 reportObject$resolved_specification <- 0
 reportObject$resolved_analysis <- 0
 reportObject$resolved_data <- 1
-reportObject$assistanceSpecification <- 0
-reportObject$correctionSuggested <- F
+reportObject$correctionSuggested <- "no"
 reportObject$correctionPublished <- NA
 
 # decide on final outcome
